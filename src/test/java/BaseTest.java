@@ -11,7 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.Assert.assertEquals;
@@ -21,26 +20,28 @@ public class BaseTest {
 
     @BeforeClass
     public static void testsSetup() {
-//        int browser = browserChoose();
-        int browser = 1;
-        String browser1 = System.getProperty("driverType");
+        String browser = System.getProperty("webdriver");
         switch (browser) {
-            case 1: {
+            case "Chrome": {
+                System.out.println("Выбран Chrome");
                 System.setProperty("webdriver.chrome.driver", "drv/chromedriver.exe");
                 driver = new ChromeDriver();
                 break;
             }
-            case 2: {
+            case "Firefox": {
+                System.out.println("Выбран Firefox");
                 System.setProperty("webdriver.gecko.driver", "drv/geckodriver.exe");
                 driver = new FirefoxDriver();
                 break;
             }
-            case 3: {
+            case "IE": {
+                System.out.println("Выбран IE");
                 System.setProperty("webdriver.ie.driver", "drv/IEDriverServer.exe");
                 driver = new InternetExplorerDriver();
                 break;
             }
             default: {
+                System.out.println("Выбор браузера некорректен, запускаем в Chrome");
                 System.setProperty("webdriver.chrome.driver", "drv/chromedriver.exe");
                 driver = new ChromeDriver();
                 break;
@@ -74,28 +75,6 @@ public class BaseTest {
     @AfterClass
     public static void close() {
         driver.quit();
-    }
-
-    /**
-     * Метод выбора браузера с консоли
-     */
-    public static int browserChoose() {
-        int browser = 0;
-        do {
-            try {
-                System.out.println("Choose browser: 1 - Chrome, 2 - Firefox, 3 - IE");
-                Scanner scanner = new Scanner(System.in);
-                browser = scanner.nextInt();
-                if (!(browser == 1 || browser == 2 || browser == 3)) {
-                    System.out.println("Данные введены некорректно");
-                    continue;
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println("Данные введены некорректно");
-            }
-        } while (true);
-        return browser;
     }
 
     /**
